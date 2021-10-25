@@ -1,0 +1,71 @@
+[
+      {
+        "portMappings": [
+          {
+            "hostPort": 0,
+            "protocol": "tcp",
+            "containerPort": 8080
+          }
+        ],
+        "name": "${microservice}",
+        "image": "${containerImage}",
+        "cpu": ${container_cpu},
+        "memory": ${container_memory},
+        "memoryReservation": ${container_memoryReservation},
+        "essential": ${container_boolean_essential},
+        "environment": [
+          {
+            "name": "SPRING_PROFILES_ACTIVE",
+            "value": "${env}"
+          },
+          {
+            "name": "APPDYNAMICS_CONTROLLER_HOST_NAME",
+            "value": "x.x.x.x"
+          },
+          {
+            "name": "APPDYNAMICS_CONTROLLER_PORT",
+            "value": "8090"
+          },
+          {
+            "name": "APPDYNAMICS_CONTROLLER_SSL_ENABLED",
+            "value": "false"
+          },
+          {
+            "name": "APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY",
+            "value": "${appdynamics_key}"
+          },
+          {
+            "name": "APPDYNAMICS_AGENT_ACCOUNT_NAME",
+            "value": "customer1"
+          },
+          {
+            "name": "APPDYNAMICS_AGENT_APPLICATION_NAME",
+            "value": "${env_container}"
+          },
+          {
+            "name": "APPDYNAMICS_JAVA_AGENT_REUSE_NODE_NAME_PREFIX",
+            "value": "${microservice}"
+          },
+          {
+            "name": "APPDYNAMICS_AGENT_TIER_NAME",
+            "value": "${microservice}"
+          },
+          {
+            "name": "APPDYNAMICS_JAVA_AGENT_REUSE_NODE_NAME",
+            "value": "true"
+          },
+          {
+            "name": "JAVA_OPTS",
+            "value": "-javaagent:/opt/app/appd/javaagent.jar -Xms${java_xmx_xms}M -Xmx${java_xmx_xms}M -XX:+UseG1GC -Dappagent.start.timeout=3 -Dappdynamics.jvm.shutdown.mark.node.as.historical=true"
+          }
+        ],
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+            "awslogs-group": "${log_group}",
+            "awslogs-region": "sa-east-1",
+            "awslogs-stream-prefix": "ecs"
+          }
+        }
+      }
+]
